@@ -121,15 +121,20 @@ func UploadCsvToSpreadSheet(csvName string) error {
 	// Convert [][]string to [][]interface{}.
 	var values [][]interface{}
 
+	count := 0
+
 	for _, row := range records {
 		var interfaceRow []interface{}
 
 		for _, cell := range row {
+			count += 1
 			interfaceRow = append(interfaceRow, cell)
 		}
 
 		values = append(values, interfaceRow)
 	}
+
+	log.Printf("count: %d", count)
 
 	// Create a new value range for the CSV data.
 	valueRange := &sheets.ValueRange{
@@ -141,6 +146,12 @@ func UploadCsvToSpreadSheet(csvName string) error {
 	if err != nil {
 		return fmt.Errorf("unable to update spreadsheet: %v", err)
 	}
+
+	srv.Spreadsheets.BatchUpdate(spreadsheet.SpreadsheetId, &sheets.BatchUpdateSpreadsheetRequest{
+		IncludeSpreadsheetInResponse: true,
+		Requests:                     []*sheets.Request{},
+		ResponseIncludeGridData:      true,
+	})
 
 	return nil
 }
