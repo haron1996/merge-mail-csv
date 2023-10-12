@@ -28,8 +28,15 @@ func main() {
 		log.Println("Duplicates removed from CSV successfully")
 	}
 
-	// upload merged csv to google sheets
-	if err := utils.UploadCsvToSpreadSheet(outputFileName); err != nil {
+	// update merged csv to google sheets without limiting columns
+	// if err := utils.UploadCsvToSpreadSheet(outputFileName); err != nil {
+	// 	log.Printf("could not upload CSV to spreadsheet: %v", err)
+	// } else {
+	// 	log.Println("CSV data uploaded to Google Spreadsheet.")
+	// }
+
+	// upload merged csv to google sheets and limit columns to 1
+	if err := utils.LimitColumsToOneAndUploadCSV(outputFileName); err != nil {
 		log.Printf("could not upload CSV to spreadsheet: %v", err)
 	} else {
 		log.Println("CSV data uploaded to Google Spreadsheet.")
