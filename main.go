@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+
 	config, err := utils.LoadConfig(".")
 	if err != nil {
 		log.Printf("could not load config: %v", err)
@@ -14,7 +15,9 @@ func main() {
 	}
 
 	folderPath := config.FolderPath         // Replace with the source folder path
-	outputFileName := config.OutPutFileName // Name of the output merged CSV file
+	outputFileName := config.OutPutFileName // Name of the output merged CSV
+	count := 20000
+	randomValuesFromCSV := "random.csv"
 
 	if err := utils.MergeCSVFiles(folderPath, outputFileName); err != nil {
 		log.Printf("could not copy csv to current dir: %v", err)
@@ -35,10 +38,16 @@ func main() {
 	// 	log.Println("CSV data uploaded to Google Spreadsheet.")
 	// }
 
-	// upload merged csv to google sheets and limit columns to 1
-	if err := utils.LimitColumsToOneAndUploadCSV(outputFileName); err != nil {
-		log.Printf("could not upload CSV to spreadsheet: %v", err)
+	//upload merged csv to google sheets and limit columns to 1
+	// if err := utils.LimitColumsToOneAndUploadCSV(outputFileName); err != nil {
+	// 	log.Printf("could not upload CSV to spreadsheet: %v", err)
+	// } else {
+	// 	log.Println("CSV data uploaded to Google Spreadsheet.")
+	// }
+
+	if err := utils.PickRandom(outputFileName, randomValuesFromCSV, count); err != nil {
+		log.Printf("could not save random emails: %v", err)
 	} else {
-		log.Println("CSV data uploaded to Google Spreadsheet.")
+		log.Println("random emails saved successfully")
 	}
 }
